@@ -44,6 +44,7 @@ type ColumnOut struct {
 	OutNameShorted string
 	TypeGo         string
 	TypeDefaultGo  string
+	WhereModifiers []WhereModifier
 }
 
 func setTableParams(gen *GenOut) {
@@ -67,9 +68,73 @@ func setTableParams(gen *GenOut) {
 			c.OutNameShorted = fmt.Sprintf(" %s.%s", t.TableShortName, c.ColumnNameGO)
 			t.Columns = append(t.Columns, c)
 			outColParams += c.OutNameShorted + "," //fmt.Sprintf(" %s.%s,", t.TableShortName, c.ColumnNameGO)
+			c.WhereModifiers = c.GetModifiers()
 		}
 
 		t.OutColParams = outColParams[:len(outColParams)-1]
 		gen.Tables = append(gen.Tables, t)
 	}
+}
+
+type WhereModifier struct {
+	Suffix    string
+	Prefix    string
+	Condition string
+	AndOr     string
+	FuncName  string
+}
+
+func (c *ColumnOut) GetModifiers() (res []WhereModifier) {
+	add := func(m WhereModifier) {
+		if len(m.AndOr) > 0 {
+			m.FuncName = m.AndOr + "_" + c.ColumnNameGO + m.Suffix
+		} else {
+			m.FuncName = c.ColumnNameGO + m.Suffix
+		}
+		res = append(res, m)
+	}
+	eqAdd := func(filter, andOr string) {
+		//sufix := filter + andOr
+		add(WhereModifier{"_Eq" + filter, andOr, "=", andOr, ""})
+	}
+
+	notEqs := func(filter, andOr string) {
+		sufix := filter //+ andOr
+		and := andOr
+		add(WhereModifier{"_LT" + sufix, and, "<", andOr, ""})
+		add(WhereModifier{"_LE" + sufix, and, "<=", andOr, ""})
+		add(WhereModifier{"_GT" + sufix, and, ">", andOr, ""})
+		add(WhereModifier{"_GE" + sufix, and, ">=", andOr, ""})
+	}
+	const filter = "_FILTERING"
+	for _, andOr := range []string{"", "And", "Or"} {
+		if c.TypeGo == "int" {
+			filter := "_Filtering"
+			if c.IsPartition {
+				eqAdd("", andOr)
+				notEqs(filter, andOr)
+			}
+			if c.IsClustering {
+				eqAdd("", andOr)
+				notEqs("", andOr)
+			}
+			if c.IsRegular {
+				eqAdd(filter, andOr)
+				notEqs(filter, andOr)
+			}
+		}
+		if c.TypeGo == "string" {
+			if c.IsPartition {
+				eqAdd("", andOr)
+			}
+			if c.IsClustering {
+				eqAdd("", andOr)
+			}
+			if c.IsRegular {
+				eqAdd(filter, andOr)
+			}
+		}
+	}
+
+	return
 }

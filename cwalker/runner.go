@@ -23,6 +23,7 @@ func Runner() {
     setTableParams(gen)
     helper.PertyPrint(gen)
 
+    //gen.Tables =gen.Tables[1:2]
     build(gen)
 
     for i := 0; i < 100; i++ {
