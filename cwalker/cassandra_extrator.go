@@ -58,7 +58,7 @@ func loadColumns(gen *GenOut, cluster *gocql.ClusterConfig) {
 			m = make(map[string]interface{})
 		}
 
-		for _, col := range table.Columns {
+		/*for _, col := range table.Columns {
 			if col.IsPartition {
 				table.PartitionColumns = append(table.PartitionColumns, col)
 			}
@@ -66,7 +66,7 @@ func loadColumns(gen *GenOut, cluster *gocql.ClusterConfig) {
 			if col.IsClustering {
 				table.ClusterColumns = append(table.ClusterColumns, col)
 			}
-		}
+		}*/
 
 	}
 }

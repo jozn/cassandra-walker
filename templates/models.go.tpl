@@ -1,11 +1,12 @@
 package xc
 
 import (
+    "errors"
+	"ms/sun/shared/helper"
+	"strconv"
 	"strings"
-	"time"
-    "github.com/gocql/gocql"
-    "github.com/scylladb/gocqlx"
-    "ms/sun/shared/helper"
+
+	"github.com/gocql/gocql"
 )
 
 //////////////// Constants //////////////////
@@ -36,6 +37,8 @@ func whereClusesToSql(wheres []whereClause, whereSep string) (string, []interfac
 		{{range .Columns }}
 			{{- .ColumnNameGO }} {{ .TypeGo }} // {{ .ColumnName }}  {{ .Kind }}
 		{{end}}
+
+		_exists, _deleted bool
 	}
 /*
 := &xc.{{ .TableNameGo }} {
@@ -49,6 +52,14 @@ func whereClusesToSql(wheres []whereClause, whereSep string) (string, []interfac
 ////////////////////////////////////////// Query seletor updater and deleter /////////////////////////
 
 {{range .Tables }}
+
+func (a *{{.TableNameGo}}) Exists() bool {
+	return a._exists
+}
+
+func (a *{{.TableNameGo}}) Deleted() bool {
+	return a._deleted
+}
 
 
 {{- $deleterType := printf "__%s_Deleter" .TableNameGo}}
@@ -80,7 +91,7 @@ func (u *{{ $selectorType}} ) Limit(limit int) *{{ $selectorType}} {
     return u
 }
 
-func (u *{{ $selectorType}}) allowFiltering()  *{{ $selectorType}} {
+func (u *{{ $selectorType}}) AllowFiltering()  *{{ $selectorType}} {
     u.allowFilter = true
     return u
 }
@@ -88,6 +99,17 @@ func (u *{{ $selectorType}}) allowFiltering()  *{{ $selectorType}} {
 
 func New{{.TableNameGo}}_Selector() *{{ $selectorType}} {
     u := {{ $selectorType}} {}
+    return &u
+}
+
+func New{{.TableNameGo}}_Updater() *{{ $updaterType}} {
+    u := {{ $updaterType}} {}
+    u.updates = make(map[string]interface{})
+    return &u
+}
+
+func New{{.TableNameGo}}_Deleter() *{{ $deleterType}} {
+    u := {{ $deleterType}} {}
     return &u
 }
 
@@ -125,17 +147,17 @@ func (u *{{ $deleterType}}) Delete_{{ .ColumnNameGO }}() *{{ $deleterType}} {
 {{ range .Columns }}
 	{{if (eq .TypeGo "int")}}
 		func (u *{{ $updaterType}}) {{ .ColumnNameGO }}(newVal int)  *{{ $updaterType}} {
-		    u.updates["{{.ColumnName}}"] = newVal
+		    u.updates["{{.ColumnName}} = ? "] = newVal
 		     return u
 		}
 	{{else if (eq .TypeGo "string")}}
 		func (u *{{ $updaterType}}) {{ .ColumnNameGO }}(newVal string) *{{ $updaterType}} {
-		    u.updates["{{.ColumnName}}"] = newVal
+		    u.updates["{{.ColumnName}} = ? "] = newVal
 		     return u
 		}
 	{{else if (eq .TypeGo "[]byte")}}
 		func (u *{{ $updaterType}}) {{ .ColumnNameGO }}(newVal []byte) *{{ $updaterType}} {
-		    u.updates["{{.ColumnName}}"] = newVal
+		    u.updates["{{.ColumnName}} = ? "] = newVal
 		     return u
 		}		
 	{{ end }}
@@ -189,6 +211,9 @@ func (u *{{ $selectorType }}) _toSql() (string,[]interface{}) {
 	if u.limit != 0 {
 		sqlstr += " LIMIT " + strconv.Itoa(u.limit)
 	}
+	if u.allowFilter {
+		sqlstr += "  ALLOW FILTERING"
+	}
 	
 	return sqlstr, whereArgs
 }
@@ -220,7 +245,7 @@ func (u *{{$selectorType}}) GetRow (session *gocql.Session) (*{{ $table.TableNam
         row = rows[0]
     }
 
-	//row._exists = true
+	row._exists = true
 
 	//On{{ .TableNameGo}}_LoadOne(row)
 
@@ -247,9 +272,9 @@ func (u *{{$selectorType}}) GetRows (session *gocql.Session) ([]*{{ $table.Table
 	}
 
 
-	// for i:=0;i< len(rows);i++ {
-	// 	rows[i]._exists = true
-	// }
+	for i:=0;i< len(rows);i++ {
+		rows[i]._exists = true
+	}
 
 	// On{{ .TableNameGo}}_LoadMany(rows)
 
@@ -281,7 +306,7 @@ func (u *{{$updaterType}}) Update(session *gocql.Session) ( error) {
     if LogTableCqlReq.{{.TableNameGo}} {
         helper.XCLog(sqlstr,allArgs)
     }
-    err = session.Query(sqlstr, allArgs).Exec()
+    err = session.Query(sqlstr, allArgs...).Exec()
     if err != nil {
         helper.XCLogErr(err)
         return  err
@@ -290,33 +315,100 @@ func (u *{{$updaterType}}) Update(session *gocql.Session) ( error) {
     return nil
 }
 
+func (d *{{$deleterType}}) Delete(session *gocql.Session) ( error) {
+    var err error
+
+    var wheresArr []string
+    var args []interface{}
+
+    var delCols string
+    if len(d.deleteCol) > 0 {
+        delCols = strings.Join(d.deleteCol,",")
+    }
+
+    for _, w := range d.wheres {
+        wheresArr = append(wheresArr, w.condition)
+        args = append(args, w.args...)
+    }
+    wheresStr := strings.Join(wheresArr, "")
+
+    sqlstr := "DELETE" +  delCols + " FROM {{.TableSchemeOut}} WHERE " + wheresStr
+
+    // run query
+    if LogTableCqlReq.{{.TableNameGo}} {
+        helper.XCLog(sqlstr,args)
+    }
+    err = session.Query(sqlstr, args...).Exec()
+    if err != nil {
+        helper.XCLogErr(err)
+        return  err
+    }
+    
+    return  nil
+}
+
+/*
+func MassInsert_{{.TableNameGo}}(rows []*{{.TableNameGo}}, session *gocql.Session) error {
+    if len(rows) == 0 {
+        return errors.New("rows slice should not be empty - inserted nothing")
+    }
+    var err error
+    ln := len(rows)
+    insVals := helper.SqlManyDollars( {{len .Columns }} ,len(rows),true)
+    
+    sqlstr := "INSERT INTO {{.TableSchemeOut}} (" +
+       " {{ .ColumnNamesParams }} " +
+        ") VALUES " + insVals
+
+    // run query
+    vals := make([]interface{}, 0, ln*5) //5 fields
+
+    for _, row := range rows {
+    	{{- range .Columns}}
+    		vals = append(vals, row.{{.ColumnNameGO}})
+    	{{- end}}
+    }
+
+    if LogTableCqlReq.{{.TableNameGo}} {
+        helper.XCLog(" MassInsert len = ", ln, sqlstr ,vals)
+    }
+    err = session.Query(sqlstr, vals...).Exec()
+    if err != nil {
+        helper.XCLogErr(err)
+        return err
+    }
+
+    return nil
+}
+*/
+
 {{end }}//end of table range 
 ///////
 
 {{range .Tables }}
 {{ $TableNameGo := .TableNameGo }}
-func ({{.TableShortName}} *{{.TableNameGo}}) Save(session *gocql.Session) error {
+func (r *{{.TableNameGo}}) Save(session *gocql.Session) error {
 	var cols []string
 	var q []string
 	var vals []interface{}
 
 	{{range .Columns }}
 		{{- if  eq .TypeGo "int" }}
-			if {{.OutNameShorted}} != 0 {
+			if r.{{.ColumnNameGO}} != 0 {
 				cols = append(cols, "{{.ColumnName}}")
 				q = append(q, "?")
-				vals = append(vals, {{.OutNameShorted}})
+				vals = append(vals, r.{{.ColumnNameGO}})
 			}
 		{{- else if eq .TypeGo "string"}}
-			if {{.OutNameShorted}} != "" {
+			if r.{{.ColumnNameGO}}  != "" {
 				cols = append(cols, "{{.ColumnName}}")
 				q = append(q, "?")
-				vals = append(vals, {{.OutNameShorted}})
+				vals = append(vals, r.{{.ColumnNameGO}})
 			}
 		{{- else}}
 				cols = append(cols, "{{.ColumnName}}")
 				q = append(q, "?")
-				vals = append(vals, {{.OutNameShorted}})
+				vals = append(vals, r.{{.ColumnNameGO}})
 		{{end}}
 	{{end}}
 
@@ -328,14 +420,44 @@ func ({{.TableShortName}} *{{.TableNameGo}}) Save(session *gocql.Session) error 
 	qOut := strings.Join(q, ",")
 	cql := "insert into {{.TableSchemeOut}} (" + colOut + ") values (" + qOut + ") "
 
+	if LogTableCqlReq.{{ $TableNameGo }} {
+			helper.XCLog(cql,vals)
+	}
 	err := session.Query(cql, vals... ).Exec()
 	if err != nil {
 		if LogTableCqlReq.{{ $TableNameGo }} {
 			helper.XCLogErr(err)
 		}
 	}
+	r._exists = true
 	return err
 }
+
+func (r *{{.TableNameGo}}) Delete(session *gocql.Session) error {
+	var err error
+	del := New{{.TableNameGo}}_Deleter()
+	 
+    {{ range $i, $col := .PartitionColumns }}
+    	{{if (eq $i 0)}}
+    		del.{{$col.ColumnNameGO}}_Eq(r.{{$col.ColumnNameGO}})
+    	{{else}}
+    		del.And_{{$col.ColumnNameGO}}_Eq(r.{{$col.ColumnNameGO}})
+    	{{end}}
+    {{end }}
+  
+
+    {{ range .ClusterColumns }}
+    	del.And_{{.ColumnNameGO}}_Eq(r.{{.ColumnNameGO}})
+    {{end }}
+
+    err = del.Delete(session)
+   	if err != nil{
+   		return err
+   	}
+	r._exists = false
+	return nil
+}
+
 {{end}}
 
 
@@ -347,6 +469,7 @@ type LogTableCql struct{
     {{range .Tables }}
     {{ .TableNameGo }} bool
     {{- end}}
+
 }
 
 var LogTableCqlReq = LogTableCql{

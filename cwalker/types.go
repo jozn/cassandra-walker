@@ -3,6 +3,7 @@ package cwalker
 import (
 	"fmt"
 	"github.com/jozn/protobuf/protoc-gen-go/generator"
+	"strings"
 )
 
 type GenOut struct {
@@ -11,21 +12,23 @@ type GenOut struct {
 }
 
 type Table struct {
-	TableName        string
-	Keyspace         string
-	Columns          []*Column
-	PartitionColumns []*Column
-	ClusterColumns   []*Column
+	TableName string
+	Keyspace  string
+	Columns   []*Column
+	//PartitionColumns []*Column
+	//ClusterColumns   []*Column
 }
 
 type TableOut struct {
 	Table
-	Columns        []*ColumnOut
-	TableShortName string
-	TableNameGo    string
-	TableSchemeOut string
-	Comment        string
-	OutColParams   string
+	Columns          []*ColumnOut
+	PartitionColumns []*ColumnOut
+	ClusterColumns   []*ColumnOut
+	TableShortName   string
+	TableNameGo      string
+	TableSchemeOut   string
+	Comment          string
+	OutColParams     string
 }
 
 type Column struct {
@@ -67,6 +70,14 @@ func setTableParams(gen *GenOut) {
 			}
 			c.OutNameShorted = fmt.Sprintf(" %s.%s", t.TableShortName, c.ColumnNameGO)
 			t.Columns = append(t.Columns, c)
+			if c.IsPartition {
+				t.PartitionColumns = append(t.PartitionColumns, c)
+			}
+
+			if col.IsClustering {
+				t.ClusterColumns = append(t.ClusterColumns, c)
+			}
+
 			outColParams += c.OutNameShorted + "," //fmt.Sprintf(" %s.%s,", t.TableShortName, c.ColumnNameGO)
 			c.WhereModifiers = c.GetModifiers()
 		}
@@ -137,4 +148,12 @@ func (c *ColumnOut) GetModifiers() (res []WhereModifier) {
 	}
 
 	return
+}
+
+func (table *TableOut) ColumnNamesParams() string {
+	var arr []string
+	for _, t := range table.Columns {
+		arr = append(arr, t.ColumnName)
+	}
+	return strings.Join(arr, ",")
 }
