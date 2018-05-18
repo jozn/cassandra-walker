@@ -145,6 +145,35 @@ func (u *{{ $deleterType}}) Delete_{{ .ColumnNameGO }}() *{{ $deleterType}} {
 		{{end }}
 	{{ end }}
 {{ end }}
+
+///////////////////////////////////////// ins for all //////////////////
+{{ range (ms_to_slice $deleterType $updaterType $selectorType) }}
+	{{ $operationType := . }}
+	{{ range $table.Columns }}
+		{{ $col := . }}
+		{{ with .GetModifiersIns }}
+			{{ range . }}
+				{{/* . */}}
+				{{ if (or (eq $col.TypeGo "int" ) (eq $col.TypeGo "string" ) ) }}
+					func (d *{{ $operationType }}) {{ .FuncName }} (val ...{{$col.TypeGo}}) *{{$operationType}} {
+					    w := whereClause{}
+					    var insWhere []interface{}
+					    for _, v := range val{
+        					insWhere = append(insWhere, v)
+    					}
+					    w.args = insWhere
+					    w.condition = "{{.AndOr}} {{ $col.ColumnName }} IN (" + helper.DbQuestionForSqlIn(len(val)) + ") "
+					    d.wheres = append(d.wheres, w)
+
+						return d
+					}
+				{{end}}
+			{{end}}
+		{{end }}
+	{{ end }}
+{{ end }}
+
+/////////////////////////////////////// End of Ins //////////////////////
 ///////////////////////////// start of where cluases
 
 /////////////////////////////////////// Start of select //////////////////
