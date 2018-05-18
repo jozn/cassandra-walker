@@ -7,11 +7,18 @@ import (
 	"os"
 	"os/exec"
 	"text/template"
+    "fmt"
 )
 
 func build(gen *GenOut) {
 
-	writeOutput("z_models.go", buildFromTemplate("models.go.tpl", gen))
+	//writeOutput("z_models.go", buildFromTemplate("models.go.tpl", gen))
+	writeOutput("zc_models.go", buildFromTemplate("models_types.go.tpl", gen))
+
+    for _,t := range gen.Tables{
+        fileName := fmt.Sprintf("zc_%s.go",t.TableName)
+        writeOutput(fileName, buildFromTemplate("model.go.tpl", t))
+    }
 
 	if true {
         e1 := exec.Command("gofmt", "-w", OUTPUT_DIR_GO_X).Run()
@@ -39,7 +46,8 @@ func writeOutput(fileName, output string) {
 
 }
 
-func buildFromTemplate(tplName string, gen *GenOut) string {
+//func buildFromTemplate(tplName string, gen *GenOut) string {
+func buildFromTemplate(tplName string, gen interface{}) string {
 	tpl := template.New("" + tplName)
 	tpl.Funcs(NewTemplateFuncs())
 	tplGoInterface, err := ioutil.ReadFile(TEMPLATES_DIR + tplName)
