@@ -7,8 +7,9 @@ import (
 )
 
 type GenOut struct {
-	TablesExtracted []*Table
-	Tables          []*TableOut
+	TablesExtracted   []*Table
+	Tables            []*TableOut
+	KeyspacesDescribe []string
 }
 
 type Table struct {
@@ -151,55 +152,54 @@ func (c *ColumnOut) GetModifiers() (res []WhereModifier) {
 }
 
 type WhereModifierIns struct {
-    Suffix    string
-    Prefix    string
-    AndOr     string
-    FuncName  string
+	Suffix   string
+	Prefix   string
+	AndOr    string
+	FuncName string
 }
 
 func (c *ColumnOut) GetModifiersIns() (res []WhereModifierIns) {
-    add := func(m WhereModifierIns) {
-        if len(m.AndOr) > 0 {
-            m.FuncName = m.AndOr + "_" + c.ColumnNameGO + m.Suffix
-        } else {
-            m.FuncName = c.ColumnNameGO + m.Suffix
-        }
-        res = append(res, m)
-    }
-    inAdd := func(filter, andOr string) {
-        add(WhereModifierIns{"_In" + filter, andOr, andOr, ""})
-    }
+	add := func(m WhereModifierIns) {
+		if len(m.AndOr) > 0 {
+			m.FuncName = m.AndOr + "_" + c.ColumnNameGO + m.Suffix
+		} else {
+			m.FuncName = c.ColumnNameGO + m.Suffix
+		}
+		res = append(res, m)
+	}
+	inAdd := func(filter, andOr string) {
+		add(WhereModifierIns{"_In" + filter, andOr, andOr, ""})
+	}
 
-    const filter = "_FILTERING"
+	const filter = "_FILTERING"
 
-    for _, andOr := range []string{"", "And", "Or"} {
-        if c.TypeGo == "int" {
-            if c.IsPartition {
-                inAdd("", andOr)
-            }
-            if c.IsClustering {
-                inAdd("", andOr)
-            }
-            if c.IsRegular {
-                inAdd(filter, andOr)
-            }
-        }
-        if c.TypeGo == "string" {
-            if c.IsPartition {
-                inAdd("", andOr)
-            }
-            if c.IsClustering {
-                inAdd("", andOr)
-            }
-            if c.IsRegular {
-                inAdd(filter, andOr)
-            }
-        }
-    }
+	for _, andOr := range []string{"", "And", "Or"} {
+		if c.TypeGo == "int" {
+			if c.IsPartition {
+				inAdd("", andOr)
+			}
+			if c.IsClustering {
+				inAdd("", andOr)
+			}
+			if c.IsRegular {
+				inAdd(filter, andOr)
+			}
+		}
+		if c.TypeGo == "string" {
+			if c.IsPartition {
+				inAdd("", andOr)
+			}
+			if c.IsClustering {
+				inAdd("", andOr)
+			}
+			if c.IsRegular {
+				inAdd(filter, andOr)
+			}
+		}
+	}
 
-    return
+	return
 }
-
 
 func (table *TableOut) ColumnNamesParams() string {
 	var arr []string

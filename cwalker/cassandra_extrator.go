@@ -6,6 +6,17 @@ import (
 	"ms/sun/shared/helper"
 )
 
+func describeKeyspace(keyspace string, gen *GenOut, cluster *gocql.ClusterConfig) {
+    cluster.Keyspace = keyspace
+    session, err := cluster.CreateSession()
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer session.Close()
+
+   // iter := session.Query(`DESCRIBE ` + keyspace + ";").String()
+}
+
 func loadTables(keyspace string, gen *GenOut, cluster *gocql.ClusterConfig) {
 	cluster.Keyspace = keyspace
 	session, err := cluster.CreateSession()
