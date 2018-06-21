@@ -6,5 +6,5 @@ const (
 	OUTPUT_DIR_GO_X       = `C:\Go\_gopath\src\ms\sun\shared\xc\`
 )
 
-var DATABASES = []string{"sunc_file"}
+var DATABASES = []string{"sunc_file","sunc_msg"}
 
