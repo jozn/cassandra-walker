@@ -417,6 +417,54 @@ func (r *{{.TableNameGo}}) Save(session *gocql.Session) error {
 	return err
 }
 
+func (r *{{.TableNameGo}}) Batch(session *gocql.Session) error {
+	var cols []string
+	var q []string
+	var vals []interface{}
+
+	{{range .Columns }}
+		{{- if  eq .TypeGo "int" }}
+			if r.{{.ColumnNameGO}} != 0 {
+				cols = append(cols, "{{.ColumnName}}")
+				q = append(q, "?")
+				vals = append(vals, r.{{.ColumnNameGO}})
+			}
+		{{- else if eq .TypeGo "string"}}
+			if r.{{.ColumnNameGO}}  != "" {
+				cols = append(cols, "{{.ColumnName}}")
+				q = append(q, "?")
+				vals = append(vals, r.{{.ColumnNameGO}})
+			}
+		{{- else}}
+				cols = append(cols, "{{.ColumnName}}")
+				q = append(q, "?")
+				vals = append(vals, r.{{.ColumnNameGO}})
+		{{end}}
+	{{end}}
+
+	if len(cols) == 0 {
+	    return errors.New("can not insert empty row.")
+    }
+
+	colOut := strings.Join(cols, ",")
+	qOut := strings.Join(q, ",")
+	cql := "insert into {{.TableSchemeOut}} (" + colOut + ") values (" + qOut + ") "
+
+	if LogTableCqlReq.{{ $TableNameGo }} {
+			helper.XCLog("(in batch)",cql,vals)
+	}
+	err := session.Query(cql, vals... ).Exec()
+	if err != nil {
+		if LogTableCqlReq.{{ $TableNameGo }} {
+			helper.XCLogErr(err)
+		}
+	}
+	batch.Query(cql, vals...)
+
+	return err
+}
+
+
 func (r *{{.TableNameGo}}) Delete(session *gocql.Session) error {
 	var err error
 	del := New{{.TableNameGo}}_Deleter()
@@ -455,7 +503,8 @@ func {{ .TableNameGo }}_Iter(iter *gocql.Iter, limit int) ([]*{{ .TableNameGo }}
 
 			{{range .Columns }}
 				if val, ok := m["{{.ColumnName}}"]; ok {
-					row.{{.ColumnNameGO}} = val.({{.TypeGo}})
+					row.{{.ColumnNameGO}} = {{.TypeGo}}(val.({{.TypeGoOriginal}}))
+					//row.{{.ColumnNameGO}} = val.({{.TypeGo}})
 				}
 			{{ end }}
 

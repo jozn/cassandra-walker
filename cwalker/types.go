@@ -47,6 +47,7 @@ type ColumnOut struct {
 	ColumnNameGO   string
 	OutNameShorted string
 	TypeGo         string
+	TypeGoOriginal string
 	TypeDefaultGo  string
 	WhereModifiers []WhereModifier
 }
@@ -62,12 +63,13 @@ func setTableParams(gen *GenOut) {
 		}
 		var outColParams = ""
 		for _, col := range table.Columns {
-			typGo, defGo := cqlTypesToGoType(col.TypeCql)
+			typGo, typOrg, defGo := cqlTypesToGoType(col.TypeCql)
 			c := &ColumnOut{
-				Column:        *col,
-				ColumnNameGO:  generator.CamelCase(col.ColumnName),
-				TypeGo:        typGo,
-				TypeDefaultGo: defGo,
+				Column:         *col,
+				ColumnNameGO:   generator.CamelCase(col.ColumnName),
+				TypeGo:         typGo,
+				TypeGoOriginal: typOrg,
+				TypeDefaultGo:  defGo,
 			}
 			c.OutNameShorted = fmt.Sprintf(" %s.%s", t.TableShortName, c.ColumnNameGO)
 			t.Columns = append(t.Columns, c)
@@ -120,7 +122,7 @@ func (c *ColumnOut) GetModifiers() (res []WhereModifier) {
 	}
 	const filter = "_FILTERING"
 	for _, andOr := range []string{"", "And", "Or"} {
-		if c.TypeGo == "int" {
+		if c.TypeGo == "int" || c.TypeGo == "int64" {
 			filter := "_Filtering"
 			if c.IsPartition {
 				eqAdd("", andOr)
