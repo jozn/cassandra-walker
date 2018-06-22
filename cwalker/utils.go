@@ -12,7 +12,7 @@ func cqlTypesToGoType(sqlType string) (typ, org, def string) {
         def =`""`
     case "bool":
         typ = "bool"
-    case "int","serial":
+    case "int","serial","tinyint","smallint":
         typ = "int"
         org = "int"
         def =`0`

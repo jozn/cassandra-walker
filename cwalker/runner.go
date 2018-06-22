@@ -8,7 +8,6 @@ import (
 var gen = &GenOut{}
 
 func Runner() {
-
 	for _, db := range DATABASES {
 		// connect to the cluster
 		//cluster := gocql.NewCluster("192.168.1.1", "192.168.1.2", "192.168.1.250")
