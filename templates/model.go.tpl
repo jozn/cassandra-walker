@@ -417,7 +417,7 @@ func (r *{{.TableNameGo}}) Save(session *gocql.Session) error {
 	return err
 }
 
-func (r *{{.TableNameGo}}) SaveBatch(session *gocql.Session) error {
+func (r *{{.TableNameGo}}) SaveBatch(batch *gocql.Session) error {
 	var cols []string
 	var q []string
 	var vals []interface{}
