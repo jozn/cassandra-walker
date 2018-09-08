@@ -1,9 +1,14 @@
 package main
 
 import (
-	"ms/cassandra_walker/cwalker"
+	"github.com/jozn/cassandra_walker/cwalker"
+    "github.com/alexflint/go-arg"
+    "fmt"
 )
 
 func main() {
-	cwalker.Runner()
+	//cwalker.Runner()
+	args := &cwalker.ConfigArgs{}
+	arg.MustParse(args)
+	fmt.Println(args)""
 }
