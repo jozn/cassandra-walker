@@ -2,7 +2,6 @@ package cwalker
 
 import (
 	"github.com/gocql/gocql"
-	"ms/sun/shared/helper"
 )
 
 var gen = &GenOut{}
@@ -35,7 +34,7 @@ func Runner() {
 
     setTableParams(gen)
 
-    helper.PertyPrint(gen)
+    PertyPrint(gen)
 
 	//gen.Tables =gen.Tables[1:2]
 	build(gen)

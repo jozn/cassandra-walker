@@ -3,7 +3,6 @@ package cwalker
 import (
 	"github.com/gocql/gocql"
 	"log"
-	"ms/sun/shared/helper"
 )
 
 func describeKeyspace(keyspace string, gen *GenOut, cluster *gocql.ClusterConfig) {
@@ -31,7 +30,7 @@ func loadTables(keyspace string, cluster *gocql.ClusterConfig) []*Table {
 	m := make(map[string]interface{}, 100)
 	var tables []*Table
 	for iter.MapScan(m) {
-		helper.PertyPrint(m)
+		PertyPrint(m)
 		t := &Table{
 			TableName: (m["table_name"]).(string),
 			Keyspace:  (m["keyspace_name"]).(string),
@@ -52,7 +51,7 @@ func loadColumns(tables []*Table, cluster *gocql.ClusterConfig) {
 		iter := session.Query(`SELECT * FROM system_schema.columns where  keyspace_name = ? AND table_name = ? `, table.Keyspace, table.TableName).Iter()
 		m := make(map[string]interface{}, 100)
 		for iter.MapScan(m) {
-			helper.PertyPrint(m)
+			PertyPrint(m)
 			t := &Column{
 				ColumnName: (m["column_name"]).(string),
 				TypeCql:    (m["type"]).(string),

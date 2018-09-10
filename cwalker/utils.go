@@ -2,6 +2,9 @@ package cwalker
 
 import (
     "strings"
+    "fmt"
+    "github.com/kr/pretty"
+    "log"
 )
 
 func cqlTypesToGoType(sqlType string) (typ, org, def string) {
@@ -48,3 +51,12 @@ func cqlTypesToGoType(sqlType string) (typ, org, def string) {
     return
 }
 
+func PertyPrint(a interface{}) {
+    fmt.Printf("%# v \n", pretty.Formatter(a))
+}
+
+func NoErr(err error) {
+    if err != nil {
+        log.Panic(err)
+    }
+}
