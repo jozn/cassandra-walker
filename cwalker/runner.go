@@ -5,13 +5,15 @@ import (
 )
 
 var gen = &GenOut{}
+var args *ConfigArgs
 
-func Runner() {
-	for _, db := range DATABASES {
+func Runner(arg *ConfigArgs) {
+    args = arg
+	for _, db := range arg.Keyspaces {
 		// connect to the cluster
 		//cluster := gocql.NewCluster("192.168.1.1", "192.168.1.2", "192.168.1.250")
 		//cluster := gocql.NewCluster("192.168.1.250")
-		cluster := gocql.NewCluster("127.0.0.1")
+		cluster := gocql.NewCluster(arg.Host)
 		cluster.Keyspace = db
 		//cluster.Keyspace = "system"
 		cluster.Consistency = gocql.One
