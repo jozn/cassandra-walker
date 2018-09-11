@@ -1,5 +1,6 @@
 
 /*
+//not for now -- but keep this
 func MassInsert_{{.TableNameGo}}(rows []*{{.TableNameGo}}, session *gocql.Session) error {
     if len(rows) == 0 {
         return errors.New("rows slice should not be empty - inserted nothing")

@@ -2,7 +2,6 @@ package xc
 
 import (
     "errors"
-	"ms/sun/shared/helper"
 	"strconv"
 	"strings"
 
@@ -162,7 +161,7 @@ func (u *{{ $deleterType}}) Delete_{{ .ColumnNameGO }}() *{{ $deleterType}} {
         					insWhere = append(insWhere, v)
     					}
 					    w.args = insWhere
-					    w.condition = "{{.AndOr}} {{ $col.ColumnName }} IN (" + helper.DbQuestionForSqlIn(len(val)) + ") "
+					    w.condition = "{{.AndOr}} {{ $col.ColumnName }} IN (" + dbQuestionForSqlIn(len(val)) + ") "
 					    d.wheres = append(d.wheres, w)
 
 						return d
@@ -212,7 +211,7 @@ func (u *{{$selectorType}}) GetRow (session *gocql.Session) (*{{ $table.TableNam
 	sqlstr, whereArgs := u._toSql()
 
 	if LogTableCqlReq.{{.TableNameGo}} {
-		helper.XCLog(sqlstr,whereArgs )
+		XCLog(sqlstr,whereArgs )
 	}
 
 	query := session.Query(sqlstr, whereArgs...)
@@ -222,7 +221,7 @@ func (u *{{$selectorType}}) GetRow (session *gocql.Session) (*{{ $table.TableNam
 	rows,err := {{.TableNameGo}}_Iter(query.Iter(),1)
 	if err != nil {
 		if LogTableCqlReq.{{.TableNameGo}} {
-            helper.XCLogErr(err)
+            XCLogErr(err)
         }
 		return nil, err
 	}
@@ -245,7 +244,7 @@ func (u *{{$selectorType}}) GetRows (session *gocql.Session) ([]*{{ $table.Table
 	sqlstr, whereArgs := u._toSql()
 
 	if LogTableCqlReq.{{.TableNameGo}} {
-		helper.XCLog(sqlstr,whereArgs )
+		XCLog(sqlstr,whereArgs )
 	}
 
 	query := session.Query(sqlstr, whereArgs...)
@@ -253,7 +252,7 @@ func (u *{{$selectorType}}) GetRows (session *gocql.Session) ([]*{{ $table.Table
 	rows,err := {{.TableNameGo}}_Iter(query.Iter(),-1)
 	if err != nil {
 		if LogTableCqlReq.{{.TableNameGo}} {
-            helper.XCLogErr(err)
+            XCLogErr(err)
         }
 		return rows, err
 	}
@@ -291,11 +290,11 @@ func (u *{{$updaterType}}) Update(session *gocql.Session) ( error) {
         sqlstr += " WHERE " + sqlWheres
     }
     if LogTableCqlReq.{{.TableNameGo}} {
-        helper.XCLog(sqlstr,allArgs)
+        XCLog(sqlstr,allArgs)
     }
     err = session.Query(sqlstr, allArgs...).Exec()
     if err != nil {
-        helper.XCLogErr(err)
+        XCLogErr(err)
         return  err
     }
 
@@ -323,11 +322,11 @@ func (d *{{$deleterType}}) Delete(session *gocql.Session) ( error) {
 
     // run query
     if LogTableCqlReq.{{.TableNameGo}} {
-        helper.XCLog(sqlstr,args)
+        XCLog(sqlstr,args)
     }
     err = session.Query(sqlstr, args...).Exec()
     if err != nil {
-        helper.XCLogErr(err)
+        XCLogErr(err)
         return  err
     }
     
@@ -341,7 +340,7 @@ func MassInsert_{{.TableNameGo}}(rows []*{{.TableNameGo}}, session *gocql.Sessio
     }
     var err error
     ln := len(rows)
-    insVals := helper.SqlManyDollars( {{len .Columns }} ,len(rows),true)
+    insVals := sqlManyDollars( {{len .Columns }} ,len(rows),true)
     
     sqlstr := "INSERT INTO {{.TableSchemeOut}} (" +
        " {{ .ColumnNamesParams }} " +
@@ -357,11 +356,11 @@ func MassInsert_{{.TableNameGo}}(rows []*{{.TableNameGo}}, session *gocql.Sessio
     }
 
     if LogTableCqlReq.{{.TableNameGo}} {
-        helper.XCLog(" MassInsert len = ", ln, sqlstr ,vals)
+        XCLog(" MassInsert len = ", ln, sqlstr ,vals)
     }
     err = session.Query(sqlstr, vals...).Exec()
     if err != nil {
-        helper.XCLogErr(err)
+        XCLogErr(err)
         return err
     }
 
@@ -405,12 +404,12 @@ func (r *{{.TableNameGo}}) Save(session *gocql.Session) error {
 	cql := "insert into {{.TableSchemeOut}} (" + colOut + ") values (" + qOut + ") "
 
 	if LogTableCqlReq.{{ $TableNameGo }} {
-			helper.XCLog(cql,vals)
+			XCLog(cql,vals)
 	}
 	err := session.Query(cql, vals... ).Exec()
 	if err != nil {
 		if LogTableCqlReq.{{ $TableNameGo }} {
-			helper.XCLogErr(err)
+			XCLogErr(err)
 		}
 	}
 	r._exists = true
@@ -451,12 +450,12 @@ func (r *{{.TableNameGo}}) SaveBatch(batch *gocql.Session) error {
 	cql := "insert into {{.TableSchemeOut}} (" + colOut + ") values (" + qOut + ") "
 
 	if LogTableCqlReq.{{ $TableNameGo }} {
-			helper.XCLog("(in batch)",cql,vals)
+			XCLog("(in batch)",cql,vals)
 	}
 	err := session.Query(cql, vals... ).Exec()
 	if err != nil {
 		if LogTableCqlReq.{{ $TableNameGo }} {
-			helper.XCLogErr(err)
+			XCLogErr(err)
 		}
 	}
 	batch.Query(cql, vals...)
