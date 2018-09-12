@@ -30,6 +30,7 @@ type TableOut struct {
 	TableSchemeOut   string
 	Comment          string
 	OutColParams     string
+	PrefixHidden     string //hide ex: Table_Selector in docs
 }
 
 type Column struct {
@@ -60,6 +61,10 @@ func setTableParams(gen *GenOut) {
 			TableShortName: shortname(table.TableName),
 			TableSchemeOut: table.Keyspace + "." + table.TableName,
 			TableNameGo:    generator.CamelCase(table.TableName),
+			PrefixHidden:   "",
+		}
+		if args.Minimize {
+			t.PrefixHidden = "__"
 		}
 		var outColParams = ""
 		for _, col := range table.Columns {

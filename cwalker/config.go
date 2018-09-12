@@ -7,4 +7,5 @@ type ConfigArgs struct {
 	Verbose   bool     `arg:"-v,help:verbosity Log"`
 	OutputDir string   `arg:"help:output of generated codes"`
 	Package   string   `arg:"help:package of go"`
+	Minimize  bool     `arg:"-m,help: minimize docs"`
 }

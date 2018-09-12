@@ -19,9 +19,9 @@ func (a *{{.TableNameGo}}) Deleted() bool {
 }
 
 
-{{- $deleterType := printf "__%s_Deleter" .TableNameGo}}
-{{- $updaterType := printf "__%s_Updater" .TableNameGo}}
-{{- $selectorType := printf "__%s_Selector" .TableNameGo}}
+{{- $deleterType := printf "%s%s_Deleter" .PrefixHidden .TableNameGo}}
+{{- $updaterType := printf "%s%s_Updater" .PrefixHidden .TableNameGo}}
+{{- $selectorType := printf "%s%s_Selector" .PrefixHidden .TableNameGo}}
 
 type {{ $selectorType}} struct {
     wheres      []whereClause
