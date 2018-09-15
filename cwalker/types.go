@@ -53,6 +53,21 @@ type ColumnOut struct {
 	WhereModifiers []WhereModifier
 }
 
+type WhereModifier struct {
+    Suffix    string
+    Prefix    string
+    Condition string
+    AndOr     string
+    FuncName  string
+}
+
+type WhereModifierIns struct {
+    Suffix   string
+    Prefix   string
+    AndOr    string
+    FuncName string
+}
+
 func setTableParams(gen *GenOut) {
 	for _, table := range gen.TablesExtracted {
 		t := &TableOut{
@@ -93,14 +108,6 @@ func setTableParams(gen *GenOut) {
 		t.OutColParams = outColParams[:len(outColParams)-1]
 		gen.Tables = append(gen.Tables, t)
 	}
-}
-
-type WhereModifier struct {
-	Suffix    string
-	Prefix    string
-	Condition string
-	AndOr     string
-	FuncName  string
 }
 
 func (c *ColumnOut) GetModifiers() (res []WhereModifier) {
@@ -156,13 +163,6 @@ func (c *ColumnOut) GetModifiers() (res []WhereModifier) {
 	}
 
 	return
-}
-
-type WhereModifierIns struct {
-	Suffix   string
-	Prefix   string
-	AndOr    string
-	FuncName string
 }
 
 func (c *ColumnOut) GetModifiersIns() (res []WhereModifierIns) {
