@@ -21,16 +21,16 @@ func build(gen *GenOut) {
 	}
 
 	if true {
-		e1 := exec.Command("gofmt", "-w", args.OutputDir).Run()
-		e2 := exec.Command("goimports", "-w", args.OutputDir).Run()
+		e1 := exec.Command("gofmt", "-w", args.Dir).Run()
+		e2 := exec.Command("goimports", "-w", args.Dir).Run()
 		NoErr(e1)
 		NoErr(e2)
 	}
 }
 
 func writeOutput(fileName, output string) {
-	os.MkdirAll(args.OutputDir, os.ModeDir)
-	file := path.Join(args.OutputDir, fileName)
+	os.MkdirAll(args.Dir, os.ModeDir)
+	file := path.Join(args.Dir, fileName)
 
 	ioutil.WriteFile(file, []byte(output), os.ModeType)
 }
