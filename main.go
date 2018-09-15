@@ -14,7 +14,6 @@ const (
 )
 
 func main() {
-
 	args := &cwalker.ConfigArgs{}
 	arg.MustParse(args)
 	if args.Host == "" {
