@@ -3,7 +3,7 @@ package cwalker
 import (
 	"bytes"
 	"fmt"
-	"github.com/jozn/cassandra_walker/bind"
+	"github.com/jozn/cassandra_walker/template_bind"
 	"io/ioutil"
 	"os"
 	"os/exec"
