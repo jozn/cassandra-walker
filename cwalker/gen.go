@@ -12,12 +12,12 @@ import (
 )
 
 func build(gen *GenOut) {
-	writeOutput("models.go", buildFromTemplate("models_types.go.tpl", gen))
+	writeOutput("models.go", buildFromTemplate("models_types.tpl.go", gen))
 	writeOutput("common.go", buildFromTemplate("common.go", gen))
 
 	for _, t := range gen.Tables {
 		fileName := fmt.Sprintf("%s.go", t.TableName)
-		writeOutput(fileName, buildFromTemplate("model.go.tpl", t))
+		writeOutput(fileName, buildFromTemplate("model.tpl.go", t))
 	}
 
 	if true {
