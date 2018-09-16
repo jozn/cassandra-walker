@@ -1,15 +1,7 @@
-package
-
-import (
-    "strings"
-    "bytes"
-    "fmt"
-)
-{{.Package}}
+package {{.Package}}
 
 import (
 	"strings"
-
 	"bytes"
 	"fmt"
     "log"
