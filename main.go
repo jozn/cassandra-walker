@@ -9,8 +9,8 @@ import (
 const (
 	DEFAULT_CLUSTER_ADDRESS = "127.0.0.1"
 	DEFAULT_PORT            = 9042
-	DEFAULT_GO_PACKAGE_NAEM = "x"
-	DEFAULT_OUTPUT          = "./walker_out"
+	DEFAULT_GO_PACKAGE_NAEM = "xc"
+	DEFAULT_OUTPUT          = "./"
 )
 
 func main() {

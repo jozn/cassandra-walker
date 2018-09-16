@@ -1,4 +1,11 @@
-package xc
+package
+
+import (
+    "strings"
+    "bytes"
+    "fmt"
+)
+{{.Package}}
 
 import (
 	"strings"

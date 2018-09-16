@@ -1,4 +1,4 @@
-package xc
+package {{.GenOut.Package}}
 
 import (
     "errors"

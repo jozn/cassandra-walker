@@ -9,6 +9,8 @@ var args *ConfigArgs
 
 func Runner(arg *ConfigArgs) {
     args = arg
+    gen.Package = args.Package
+
 	for _, db := range arg.Keyspaces {
 		// connect to the cluster
 		cluster := gocql.NewCluster(arg.Host)

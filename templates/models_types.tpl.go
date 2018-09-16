@@ -1,4 +1,4 @@
-package xc
+package {{.Package}}
 
 import (
     "errors"

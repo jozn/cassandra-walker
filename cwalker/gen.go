@@ -29,7 +29,8 @@ func build(gen *GenOut) {
 }
 
 func writeOutput(fileName, output string) {
-	os.MkdirAll(args.Dir, os.ModeDir)
+	dirOut := path.Join(args.Dir, args.Package)
+	os.MkdirAll(dirOut, os.ModeDir)
 	file := path.Join(args.Dir, fileName)
 
 	ioutil.WriteFile(file, []byte(output), os.ModeType)

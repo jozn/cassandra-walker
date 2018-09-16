@@ -10,6 +10,7 @@ type GenOut struct {
 	TablesExtracted   []*Table
 	Tables            []*TableOut
 	KeyspacesDescribe []string
+	Package           string
 }
 
 type Table struct {
@@ -30,7 +31,8 @@ type TableOut struct {
 	TableSchemeOut   string
 	Comment          string
 	OutColParams     string
-	PrefixHidden     string //hide ex: Table_Selector in docs
+	PrefixHidden     string  //hide ex: Table_Selector in docs
+	GenOut           *GenOut //we need this for package refrencing, could be done better, but good
 }
 
 type Column struct {
@@ -54,18 +56,18 @@ type ColumnOut struct {
 }
 
 type WhereModifier struct {
-    Suffix    string
-    Prefix    string
-    Condition string
-    AndOr     string
-    FuncName  string
+	Suffix    string
+	Prefix    string
+	Condition string
+	AndOr     string
+	FuncName  string
 }
 
 type WhereModifierIns struct {
-    Suffix   string
-    Prefix   string
-    AndOr    string
-    FuncName string
+	Suffix   string
+	Prefix   string
+	AndOr    string
+	FuncName string
 }
 
 func setTableParams(gen *GenOut) {
@@ -77,6 +79,7 @@ func setTableParams(gen *GenOut) {
 			TableSchemeOut: table.Keyspace + "." + table.TableName,
 			TableNameGo:    generator.CamelCase(table.TableName),
 			PrefixHidden:   "",
+			GenOut:         gen,
 		}
 		if args.Minimize {
 			t.PrefixHidden = "__"
