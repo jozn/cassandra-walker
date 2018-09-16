@@ -13,7 +13,7 @@ import (
 
 func build(gen *GenOut) {
 	writeOutput("models.go", buildFromTemplate("models_types.tpl.go", gen))
-	writeOutput("common.go", buildFromTemplate("common.go", gen))
+	writeOutput("common.go", buildFromTemplate("common.go.tpl", gen))
 
 	for _, t := range gen.Tables {
 		fileName := fmt.Sprintf("%s.go", t.TableName)
@@ -31,7 +31,7 @@ func build(gen *GenOut) {
 func writeOutput(fileName, output string) {
 	dirOut := path.Join(args.Dir, args.Package)
 	os.MkdirAll(dirOut, os.ModeDir)
-	file := path.Join(args.Dir, fileName)
+	file := path.Join(dirOut, fileName)
 
 	ioutil.WriteFile(file, []byte(output), os.ModeType)
 }
