@@ -52,3 +52,18 @@ func main() {
 	_ = twitts
 	_ = twitt
 }
+
+/* log output - this is produced CQL queries to cassandra:
+
+2018/09/18 22:35:54 CQL:  [insert into twitter.twitt (body,create_time,twiit_id,user_id) values (?,?,?,?)  [Hello World 1566000000 1 1]]
+2018/09/18 22:35:54 CQL:  [DELETE FROM twitter.twitt WHERE  user_id = ? And twiit_id = ?  [1 1]]
+2018/09/18 22:35:54 CQL:  [SELECT * FROM twitter.twitt WHERE  user_id = ?  LIMIT 5 [1]]
+2018/09/18 22:35:54 CQL:  [SELECT * FROM twitter.twitt WHERE  user_id = ?  LIMIT 5 [1]]
+2018/09/18 22:35:54 CQL:  [SELECT * FROM twitter.twitt WHERE  user_id = ? And twiit_id IN (?,?,?)  [1 1 25 68]]
+2018/09/18 22:35:54 CQL:  [SELECT user_id, body FROM twitter.twitt WHERE  user_id = ? And twiit_id IN (?,?,?)  LIMIT 12 [1 1 25 68]]
+2018/09/18 22:35:54 CQL:  [SELECT * FROM twitter.twitt WHERE  user_id < ?  LIMIT 10  ALLOW FILTERING [100]]
+2018/09/18 22:35:54 CQL:  [UPDATE twitter.twitt SET body = ?  WHERE  user_id = ? And twiit_id IN (?,?,?)  [new twitt text 1 1 2 3]]
+2018/09/18 22:35:54 CQL:  [DELETE FROM twitter.twitt WHERE  user_id = ? And twiit_id IN (?,?,?)  [1 1 2 3]]
+2018/09/18 22:35:54 CQL:  [DELETE FROM twitter.twitt WHERE  user_id = ?  [1]]
+
+*/
