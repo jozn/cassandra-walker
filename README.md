@@ -40,3 +40,84 @@ Options:
   --help, -h             display this help and exit
 ```
 
+## Guides
+Lets see how to use this tool.
+We will follow twitter sample in [sample directory](https://github.com/jozn/cassandra_walker/tree/master/samples/twitter)
+
+Assume you have this cassandra keyspace:
+```cql
+CREATE KEYSPACE twitter
+  WITH REPLICATION = {
+   'class' : 'SimpleStrategy',
+   'replication_factor' : 1
+ };
+
+CREATE TABLE twitter.twitt (
+	user_id bigint,
+	twiit_id varchar,
+	body varchar,
+	create_time int,
+	PRIMARY KEY (user_id,twiit_id)
+);
+
+CREATE TABLE twitter.user (
+	user_id int,
+	user_name varchar,
+	full_name varchar,
+	created_time bigint,
+	PRIMARY KEY (user_id)
+);
+```
+
+Run the following command:
+```
+cassandra_walker twitter --host 127.0.01 --port 9042
+```
+
+This will generates codes in `xc` directory.
+
+```
+package xc
+
+type Twitt struct {
+	Body       string // body  regular
+	CreateTime int    // create_time  regular
+	TwiitId    string // twiit_id  clustering
+	UserId     int    // user_id  partition_key
+
+	_exists, _deleted bool
+}
+
+/*
+:= &xc.Twitt {
+	Body: "",
+	CreateTime: 0,
+	TwiitId: "",
+	UserId: 0,
+*/
+
+type User struct {
+	CreatedTime int    // created_time  regular
+	FullName    string // full_name  regular
+	UserId      int    // user_id  partition_key
+	UserName    string // user_name  regular
+
+	_exists, _deleted bool
+}
+
+/*
+:= &xc.User {
+	CreatedTime: 0,
+	FullName: "",
+	UserId: 0,
+	UserName: "",
+*/
+```
+From now we just work with `Twiit` type. But
+For each table, we now have
+
+```
+// create
+
+
+```

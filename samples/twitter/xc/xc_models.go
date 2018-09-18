@@ -3,7 +3,7 @@ package xc
 type Twitt struct {
 	Body       string // body  regular
 	CreateTime int    // create_time  regular
-	TwiitId    string // twiit_id  clustering
+	TwiitId    int    // twiit_id  clustering
 	UserId     int    // user_id  partition_key
 
 	_exists, _deleted bool
@@ -13,7 +13,7 @@ type Twitt struct {
 := &xc.Twitt {
 	Body: "",
 	CreateTime: 0,
-	TwiitId: "",
+	TwiitId: 0,
 	UserId: 0,
 */
 

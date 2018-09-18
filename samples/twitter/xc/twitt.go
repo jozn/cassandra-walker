@@ -167,7 +167,7 @@ func (u *Twitt_Updater) CreateTime(newVal int) *Twitt_Updater {
 	return u
 }
 
-func (u *Twitt_Updater) TwiitId(newVal string) *Twitt_Updater {
+func (u *Twitt_Updater) TwiitId(newVal int) *Twitt_Updater {
 	u.updates["twiit_id = ? "] = newVal
 	return u
 }
@@ -415,7 +415,7 @@ func (d *Twitt_Deleter) Or_CreateTime_GE_Filtering(val int) *Twitt_Deleter {
 
 //{_Eq  =  TwiitId_Eq}
 
-func (d *Twitt_Deleter) TwiitId_Eq(val string) *Twitt_Deleter {
+func (d *Twitt_Deleter) TwiitId_Eq(val int) *Twitt_Deleter {
 	w := whereClause{}
 	var insWhere []interface{}
 	insWhere = append(insWhere, val)
@@ -426,9 +426,61 @@ func (d *Twitt_Deleter) TwiitId_Eq(val string) *Twitt_Deleter {
 	return d
 }
 
+//{_LT  <  TwiitId_LT}
+
+func (d *Twitt_Deleter) TwiitId_LT(val int) *Twitt_Deleter {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = " twiit_id < ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_LE  <=  TwiitId_LE}
+
+func (d *Twitt_Deleter) TwiitId_LE(val int) *Twitt_Deleter {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = " twiit_id <= ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GT  >  TwiitId_GT}
+
+func (d *Twitt_Deleter) TwiitId_GT(val int) *Twitt_Deleter {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = " twiit_id > ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GE  >=  TwiitId_GE}
+
+func (d *Twitt_Deleter) TwiitId_GE(val int) *Twitt_Deleter {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = " twiit_id >= ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
 //{_Eq And = And And_TwiitId_Eq}
 
-func (d *Twitt_Deleter) And_TwiitId_Eq(val string) *Twitt_Deleter {
+func (d *Twitt_Deleter) And_TwiitId_Eq(val int) *Twitt_Deleter {
 	w := whereClause{}
 	var insWhere []interface{}
 	insWhere = append(insWhere, val)
@@ -439,14 +491,118 @@ func (d *Twitt_Deleter) And_TwiitId_Eq(val string) *Twitt_Deleter {
 	return d
 }
 
+//{_LT And < And And_TwiitId_LT}
+
+func (d *Twitt_Deleter) And_TwiitId_LT(val int) *Twitt_Deleter {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "And twiit_id < ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_LE And <= And And_TwiitId_LE}
+
+func (d *Twitt_Deleter) And_TwiitId_LE(val int) *Twitt_Deleter {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "And twiit_id <= ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GT And > And And_TwiitId_GT}
+
+func (d *Twitt_Deleter) And_TwiitId_GT(val int) *Twitt_Deleter {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "And twiit_id > ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GE And >= And And_TwiitId_GE}
+
+func (d *Twitt_Deleter) And_TwiitId_GE(val int) *Twitt_Deleter {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "And twiit_id >= ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
 //{_Eq Or = Or Or_TwiitId_Eq}
 
-func (d *Twitt_Deleter) Or_TwiitId_Eq(val string) *Twitt_Deleter {
+func (d *Twitt_Deleter) Or_TwiitId_Eq(val int) *Twitt_Deleter {
 	w := whereClause{}
 	var insWhere []interface{}
 	insWhere = append(insWhere, val)
 	w.args = insWhere
 	w.condition = "Or twiit_id = ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_LT Or < Or Or_TwiitId_LT}
+
+func (d *Twitt_Deleter) Or_TwiitId_LT(val int) *Twitt_Deleter {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "Or twiit_id < ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_LE Or <= Or Or_TwiitId_LE}
+
+func (d *Twitt_Deleter) Or_TwiitId_LE(val int) *Twitt_Deleter {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "Or twiit_id <= ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GT Or > Or Or_TwiitId_GT}
+
+func (d *Twitt_Deleter) Or_TwiitId_GT(val int) *Twitt_Deleter {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "Or twiit_id > ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GE Or >= Or Or_TwiitId_GE}
+
+func (d *Twitt_Deleter) Or_TwiitId_GE(val int) *Twitt_Deleter {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "Or twiit_id >= ? "
 	d.wheres = append(d.wheres, w)
 
 	return d
@@ -883,7 +1039,7 @@ func (d *Twitt_Updater) Or_CreateTime_GE_Filtering(val int) *Twitt_Updater {
 
 //{_Eq  =  TwiitId_Eq}
 
-func (d *Twitt_Updater) TwiitId_Eq(val string) *Twitt_Updater {
+func (d *Twitt_Updater) TwiitId_Eq(val int) *Twitt_Updater {
 	w := whereClause{}
 	var insWhere []interface{}
 	insWhere = append(insWhere, val)
@@ -894,9 +1050,61 @@ func (d *Twitt_Updater) TwiitId_Eq(val string) *Twitt_Updater {
 	return d
 }
 
+//{_LT  <  TwiitId_LT}
+
+func (d *Twitt_Updater) TwiitId_LT(val int) *Twitt_Updater {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = " twiit_id < ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_LE  <=  TwiitId_LE}
+
+func (d *Twitt_Updater) TwiitId_LE(val int) *Twitt_Updater {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = " twiit_id <= ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GT  >  TwiitId_GT}
+
+func (d *Twitt_Updater) TwiitId_GT(val int) *Twitt_Updater {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = " twiit_id > ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GE  >=  TwiitId_GE}
+
+func (d *Twitt_Updater) TwiitId_GE(val int) *Twitt_Updater {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = " twiit_id >= ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
 //{_Eq And = And And_TwiitId_Eq}
 
-func (d *Twitt_Updater) And_TwiitId_Eq(val string) *Twitt_Updater {
+func (d *Twitt_Updater) And_TwiitId_Eq(val int) *Twitt_Updater {
 	w := whereClause{}
 	var insWhere []interface{}
 	insWhere = append(insWhere, val)
@@ -907,14 +1115,118 @@ func (d *Twitt_Updater) And_TwiitId_Eq(val string) *Twitt_Updater {
 	return d
 }
 
+//{_LT And < And And_TwiitId_LT}
+
+func (d *Twitt_Updater) And_TwiitId_LT(val int) *Twitt_Updater {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "And twiit_id < ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_LE And <= And And_TwiitId_LE}
+
+func (d *Twitt_Updater) And_TwiitId_LE(val int) *Twitt_Updater {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "And twiit_id <= ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GT And > And And_TwiitId_GT}
+
+func (d *Twitt_Updater) And_TwiitId_GT(val int) *Twitt_Updater {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "And twiit_id > ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GE And >= And And_TwiitId_GE}
+
+func (d *Twitt_Updater) And_TwiitId_GE(val int) *Twitt_Updater {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "And twiit_id >= ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
 //{_Eq Or = Or Or_TwiitId_Eq}
 
-func (d *Twitt_Updater) Or_TwiitId_Eq(val string) *Twitt_Updater {
+func (d *Twitt_Updater) Or_TwiitId_Eq(val int) *Twitt_Updater {
 	w := whereClause{}
 	var insWhere []interface{}
 	insWhere = append(insWhere, val)
 	w.args = insWhere
 	w.condition = "Or twiit_id = ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_LT Or < Or Or_TwiitId_LT}
+
+func (d *Twitt_Updater) Or_TwiitId_LT(val int) *Twitt_Updater {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "Or twiit_id < ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_LE Or <= Or Or_TwiitId_LE}
+
+func (d *Twitt_Updater) Or_TwiitId_LE(val int) *Twitt_Updater {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "Or twiit_id <= ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GT Or > Or Or_TwiitId_GT}
+
+func (d *Twitt_Updater) Or_TwiitId_GT(val int) *Twitt_Updater {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "Or twiit_id > ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GE Or >= Or Or_TwiitId_GE}
+
+func (d *Twitt_Updater) Or_TwiitId_GE(val int) *Twitt_Updater {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "Or twiit_id >= ? "
 	d.wheres = append(d.wheres, w)
 
 	return d
@@ -1351,7 +1663,7 @@ func (d *Twitt_Selector) Or_CreateTime_GE_Filtering(val int) *Twitt_Selector {
 
 //{_Eq  =  TwiitId_Eq}
 
-func (d *Twitt_Selector) TwiitId_Eq(val string) *Twitt_Selector {
+func (d *Twitt_Selector) TwiitId_Eq(val int) *Twitt_Selector {
 	w := whereClause{}
 	var insWhere []interface{}
 	insWhere = append(insWhere, val)
@@ -1362,9 +1674,61 @@ func (d *Twitt_Selector) TwiitId_Eq(val string) *Twitt_Selector {
 	return d
 }
 
+//{_LT  <  TwiitId_LT}
+
+func (d *Twitt_Selector) TwiitId_LT(val int) *Twitt_Selector {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = " twiit_id < ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_LE  <=  TwiitId_LE}
+
+func (d *Twitt_Selector) TwiitId_LE(val int) *Twitt_Selector {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = " twiit_id <= ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GT  >  TwiitId_GT}
+
+func (d *Twitt_Selector) TwiitId_GT(val int) *Twitt_Selector {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = " twiit_id > ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GE  >=  TwiitId_GE}
+
+func (d *Twitt_Selector) TwiitId_GE(val int) *Twitt_Selector {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = " twiit_id >= ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
 //{_Eq And = And And_TwiitId_Eq}
 
-func (d *Twitt_Selector) And_TwiitId_Eq(val string) *Twitt_Selector {
+func (d *Twitt_Selector) And_TwiitId_Eq(val int) *Twitt_Selector {
 	w := whereClause{}
 	var insWhere []interface{}
 	insWhere = append(insWhere, val)
@@ -1375,14 +1739,118 @@ func (d *Twitt_Selector) And_TwiitId_Eq(val string) *Twitt_Selector {
 	return d
 }
 
+//{_LT And < And And_TwiitId_LT}
+
+func (d *Twitt_Selector) And_TwiitId_LT(val int) *Twitt_Selector {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "And twiit_id < ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_LE And <= And And_TwiitId_LE}
+
+func (d *Twitt_Selector) And_TwiitId_LE(val int) *Twitt_Selector {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "And twiit_id <= ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GT And > And And_TwiitId_GT}
+
+func (d *Twitt_Selector) And_TwiitId_GT(val int) *Twitt_Selector {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "And twiit_id > ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GE And >= And And_TwiitId_GE}
+
+func (d *Twitt_Selector) And_TwiitId_GE(val int) *Twitt_Selector {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "And twiit_id >= ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
 //{_Eq Or = Or Or_TwiitId_Eq}
 
-func (d *Twitt_Selector) Or_TwiitId_Eq(val string) *Twitt_Selector {
+func (d *Twitt_Selector) Or_TwiitId_Eq(val int) *Twitt_Selector {
 	w := whereClause{}
 	var insWhere []interface{}
 	insWhere = append(insWhere, val)
 	w.args = insWhere
 	w.condition = "Or twiit_id = ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_LT Or < Or Or_TwiitId_LT}
+
+func (d *Twitt_Selector) Or_TwiitId_LT(val int) *Twitt_Selector {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "Or twiit_id < ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_LE Or <= Or Or_TwiitId_LE}
+
+func (d *Twitt_Selector) Or_TwiitId_LE(val int) *Twitt_Selector {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "Or twiit_id <= ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GT Or > Or Or_TwiitId_GT}
+
+func (d *Twitt_Selector) Or_TwiitId_GT(val int) *Twitt_Selector {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "Or twiit_id > ? "
+	d.wheres = append(d.wheres, w)
+
+	return d
+}
+
+//{_GE Or >= Or Or_TwiitId_GE}
+
+func (d *Twitt_Selector) Or_TwiitId_GE(val int) *Twitt_Selector {
+	w := whereClause{}
+	var insWhere []interface{}
+	insWhere = append(insWhere, val)
+	w.args = insWhere
+	w.condition = "Or twiit_id >= ? "
 	d.wheres = append(d.wheres, w)
 
 	return d
@@ -1663,7 +2131,7 @@ func (d *Twitt_Deleter) Or_CreateTime_In_FILTERING(val ...int) *Twitt_Deleter {
 	return d
 }
 
-func (d *Twitt_Deleter) TwiitId_In(val ...string) *Twitt_Deleter {
+func (d *Twitt_Deleter) TwiitId_In(val ...int) *Twitt_Deleter {
 	w := whereClause{}
 	var insWhere []interface{}
 	for _, v := range val {
@@ -1676,7 +2144,7 @@ func (d *Twitt_Deleter) TwiitId_In(val ...string) *Twitt_Deleter {
 	return d
 }
 
-func (d *Twitt_Deleter) And_TwiitId_In(val ...string) *Twitt_Deleter {
+func (d *Twitt_Deleter) And_TwiitId_In(val ...int) *Twitt_Deleter {
 	w := whereClause{}
 	var insWhere []interface{}
 	for _, v := range val {
@@ -1689,7 +2157,7 @@ func (d *Twitt_Deleter) And_TwiitId_In(val ...string) *Twitt_Deleter {
 	return d
 }
 
-func (d *Twitt_Deleter) Or_TwiitId_In(val ...string) *Twitt_Deleter {
+func (d *Twitt_Deleter) Or_TwiitId_In(val ...int) *Twitt_Deleter {
 	w := whereClause{}
 	var insWhere []interface{}
 	for _, v := range val {
@@ -1819,7 +2287,7 @@ func (d *Twitt_Updater) Or_CreateTime_In_FILTERING(val ...int) *Twitt_Updater {
 	return d
 }
 
-func (d *Twitt_Updater) TwiitId_In(val ...string) *Twitt_Updater {
+func (d *Twitt_Updater) TwiitId_In(val ...int) *Twitt_Updater {
 	w := whereClause{}
 	var insWhere []interface{}
 	for _, v := range val {
@@ -1832,7 +2300,7 @@ func (d *Twitt_Updater) TwiitId_In(val ...string) *Twitt_Updater {
 	return d
 }
 
-func (d *Twitt_Updater) And_TwiitId_In(val ...string) *Twitt_Updater {
+func (d *Twitt_Updater) And_TwiitId_In(val ...int) *Twitt_Updater {
 	w := whereClause{}
 	var insWhere []interface{}
 	for _, v := range val {
@@ -1845,7 +2313,7 @@ func (d *Twitt_Updater) And_TwiitId_In(val ...string) *Twitt_Updater {
 	return d
 }
 
-func (d *Twitt_Updater) Or_TwiitId_In(val ...string) *Twitt_Updater {
+func (d *Twitt_Updater) Or_TwiitId_In(val ...int) *Twitt_Updater {
 	w := whereClause{}
 	var insWhere []interface{}
 	for _, v := range val {
@@ -1975,7 +2443,7 @@ func (d *Twitt_Selector) Or_CreateTime_In_FILTERING(val ...int) *Twitt_Selector 
 	return d
 }
 
-func (d *Twitt_Selector) TwiitId_In(val ...string) *Twitt_Selector {
+func (d *Twitt_Selector) TwiitId_In(val ...int) *Twitt_Selector {
 	w := whereClause{}
 	var insWhere []interface{}
 	for _, v := range val {
@@ -1988,7 +2456,7 @@ func (d *Twitt_Selector) TwiitId_In(val ...string) *Twitt_Selector {
 	return d
 }
 
-func (d *Twitt_Selector) And_TwiitId_In(val ...string) *Twitt_Selector {
+func (d *Twitt_Selector) And_TwiitId_In(val ...int) *Twitt_Selector {
 	w := whereClause{}
 	var insWhere []interface{}
 	for _, v := range val {
@@ -2001,7 +2469,7 @@ func (d *Twitt_Selector) And_TwiitId_In(val ...string) *Twitt_Selector {
 	return d
 }
 
-func (d *Twitt_Selector) Or_TwiitId_In(val ...string) *Twitt_Selector {
+func (d *Twitt_Selector) Or_TwiitId_In(val ...int) *Twitt_Selector {
 	w := whereClause{}
 	var insWhere []interface{}
 	for _, v := range val {
@@ -2267,7 +2735,7 @@ func (r *Twitt) Save(session *gocql.Session) error {
 		vals = append(vals, r.CreateTime)
 	}
 
-	if r.TwiitId != "" {
+	if r.TwiitId != 0 {
 		cols = append(cols, "twiit_id")
 		q = append(q, "?")
 		vals = append(vals, r.TwiitId)
@@ -2317,7 +2785,7 @@ func (r *Twitt) SaveBatch(batch *gocql.Session) error {
 		vals = append(vals, r.CreateTime)
 	}
 
-	if r.TwiitId != "" {
+	if r.TwiitId != 0 {
 		cols = append(cols, "twiit_id")
 		q = append(q, "?")
 		vals = append(vals, r.TwiitId)
@@ -2340,7 +2808,7 @@ func (r *Twitt) SaveBatch(batch *gocql.Session) error {
 	if LogTableCqlReq.Twitt {
 		XCLog("(in batch)", cql, vals)
 	}
-	err := session.Query(cql, vals...).Exec()
+	err := batch.Query(cql, vals...).Exec()
 	if err != nil {
 		if LogTableCqlReq.Twitt {
 			XCLogErr(err)
@@ -2389,12 +2857,12 @@ func Twitt_Iter(iter *gocql.Iter, limit int) ([]*Twitt, error) {
 			}
 
 			if val, ok := m["twiit_id"]; ok {
-				row.TwiitId = string(val.(string))
-				//row.TwiitId = val.(string)
+				row.TwiitId = int(val.(int64))
+				//row.TwiitId = val.(int)
 			}
 
 			if val, ok := m["user_id"]; ok {
-				row.UserId = int(val.(int64))
+				row.UserId = int(val.(int))
 				//row.UserId = val.(int)
 			}
 

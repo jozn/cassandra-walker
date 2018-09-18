@@ -2340,7 +2340,7 @@ func (r *User) SaveBatch(batch *gocql.Session) error {
 	if LogTableCqlReq.User {
 		XCLog("(in batch)", cql, vals)
 	}
-	err := session.Query(cql, vals...).Exec()
+	err := batch.Query(cql, vals...).Exec()
 	if err != nil {
 		if LogTableCqlReq.User {
 			XCLogErr(err)

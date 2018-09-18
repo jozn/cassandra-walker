@@ -5,8 +5,8 @@ CREATE KEYSPACE twitter
  };
 
 CREATE TABLE twitter.twitt (
-	user_id bigint,
-	twiit_id varchar,
+	user_id int,
+	twiit_id bigint,
 	body varchar,
 	create_time int,
 	PRIMARY KEY (user_id,twiit_id)

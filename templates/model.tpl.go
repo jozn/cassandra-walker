@@ -452,7 +452,7 @@ func (r *{{.TableNameGo}}) SaveBatch(batch *gocql.Session) error {
 	if LogTableCqlReq.{{ $TableNameGo }} {
 			XCLog("(in batch)",cql,vals)
 	}
-	err := session.Query(cql, vals... ).Exec()
+	err := batch.Query(cql, vals... ).Exec()
 	if err != nil {
 		if LogTableCqlReq.{{ $TableNameGo }} {
 			XCLogErr(err)
