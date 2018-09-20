@@ -189,3 +189,11 @@ func main() {
 */
 
 ```
+
+### Todos
+- [x] Add twitter sample play code.
+- [ ] Add docs for logging , and better docs for `*_Selector()` ,`*_Updaterr()` and `*_Deleter()`.
+- [ ] Add for Batching.
+- [ ] Add `AllowFiltering` to Deleter
+- [ ] Modify `.Save(...)` and add `.SaveCompact(...)`
+- [ ] Do final cleanups ( remove double cql whitespaces, some unused codes, ... )
