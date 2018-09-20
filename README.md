@@ -36,7 +36,7 @@ Options:
   --verbose, -v          verbosity Log
   --dir DIR, -d DIR      output of generated codes (default './')
   --package PACKAGE      package of go
-  --minimize, -m          minimize docs
+  --minimize, -m         minimize docs
   --help, -h             display this help and exit
 ```
 
@@ -75,6 +75,8 @@ cassandra_walker twitter --host 127.0.01 --port 9042
 ```
 
 This will generates codes in `xc` directory.
+
+See the result in [godoc](https://godoc.org/github.com/jozn/cassandra_walker/samples/twitter/xc) or in [go files](https://github.com/jozn/cassandra_walker/tree/master/samples/twitter/xc).
 
 ```go
 package xc
