@@ -197,3 +197,9 @@ func main() {
 - [ ] Add `AllowFiltering` to Deleter
 - [ ] Modify `.Save(...)` and add `.SaveCompact(...)`
 - [ ] Do final cleanups ( remove double cql whitespaces, some unused codes, ... )
+
+### Related Projects
+Similar projects for SQL databases.
+- [db_walker](https://github.com/jozn/db_walker)
+- [xo](https://github.com/xo/xo)
+- [Android Orma](https://github.com/maskarade/Android-Orma)
