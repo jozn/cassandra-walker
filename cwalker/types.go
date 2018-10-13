@@ -2,8 +2,9 @@ package cwalker
 
 import (
 	"fmt"
-	"github.com/jozn/protobuf/protoc-gen-go/generator"
 	"strings"
+
+	"github.com/jozn/protobuf/protoc-gen-go/generator"
 )
 
 type GenOut struct {

@@ -3,12 +3,13 @@ package cwalker
 import (
 	"bytes"
 	"fmt"
-	"github.com/jozn/cassandra_walker/template_bind"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path"
 	"text/template"
+
+	"github.com/jozn/cassandra-walker/template_bind"
 )
 
 func build(gen *GenOut) {

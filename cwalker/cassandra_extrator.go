@@ -1,8 +1,9 @@
 package cwalker
 
 import (
-	"github.com/gocql/gocql"
 	"log"
+
+	"github.com/gocql/gocql"
 )
 
 func describeKeyspace(keyspace string, gen *GenOut, cluster *gocql.ClusterConfig) {

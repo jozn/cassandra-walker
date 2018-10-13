@@ -203,10 +203,10 @@ func AssetNames() []string {
 
 // _bindata is a table, holding each asset generator, mapped to its name.
 var _bindata = map[string]func() (*asset, error){
-	"common.tpl.go": commonTplGo,
-	"model.tpl.go": modelTplGo,
+	"common.tpl.go":       commonTplGo,
+	"model.tpl.go":        modelTplGo,
 	"models_types.tpl.go": models_typesTplGo,
-	"not_used.go.tpl": not_usedGoTpl,
+	"not_used.go.tpl":     not_usedGoTpl,
 }
 
 // AssetDir returns the file names below a certain
@@ -248,11 +248,12 @@ type bintree struct {
 	Func     func() (*asset, error)
 	Children map[string]*bintree
 }
+
 var _bintree = &bintree{nil, map[string]*bintree{
-	"common.tpl.go": &bintree{commonTplGo, map[string]*bintree{}},
-	"model.tpl.go": &bintree{modelTplGo, map[string]*bintree{}},
+	"common.tpl.go":       &bintree{commonTplGo, map[string]*bintree{}},
+	"model.tpl.go":        &bintree{modelTplGo, map[string]*bintree{}},
 	"models_types.tpl.go": &bintree{models_typesTplGo, map[string]*bintree{}},
-	"not_used.go.tpl": &bintree{not_usedGoTpl, map[string]*bintree{}},
+	"not_used.go.tpl":     &bintree{not_usedGoTpl, map[string]*bintree{}},
 }}
 
 // RestoreAsset restores an asset under the given directory
@@ -301,4 +302,3 @@ func _filePath(dir, name string) string {
 	cannonicalName := strings.Replace(name, "\\", "/", -1)
 	return filepath.Join(append([]string{dir}, strings.Split(cannonicalName, "/")...)...)
 }
-

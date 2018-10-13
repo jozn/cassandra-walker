@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gocql/gocql"
-	"github.com/jozn/cassandra_walker/samples/twitter/xc"
+	"github.com/jozn/cassandra-walker/samples/twitter/xc"
 )
 
 func main() {

@@ -8,8 +8,8 @@ var gen = &GenOut{}
 var args *ConfigArgs
 
 func Runner(arg *ConfigArgs) {
-    args = arg
-    gen.Package = args.Package
+	args = arg
+	gen.Package = args.Package
 
 	for _, db := range arg.Keyspaces {
 		// connect to the cluster
@@ -22,16 +22,16 @@ func Runner(arg *ConfigArgs) {
 
 		tables := loadTables(db, cluster)
 
-        loadColumns(tables, cluster)
+		loadColumns(tables, cluster)
 
 		for _, t := range tables {
 			gen.TablesExtracted = append(gen.TablesExtracted, t)
 		}
 	}
 
-    setTableParams(gen)
+	setTableParams(gen)
 
-    PertyPrint(gen)
+	PertyPrint(gen)
 
 	build(gen)
 }

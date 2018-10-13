@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/alexflint/go-arg"
-	"github.com/jozn/cassandra_walker/cwalker"
+	"github.com/jozn/cassandra-walker/cwalker"
 )
 
 const (

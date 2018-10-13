@@ -1,31 +1,31 @@
 # Cassandra walker
 Cassandra walker is and ORM (Object Relation Mapper) like, for cassandra.
 
-`cassandra_walker` is command-line tool to generate Golang code based for cassandra keyspaces (databases).
+`cassandra-walker` is command-line tool to generate Golang code based for cassandra keyspaces (databases).
 
-with pointing `cassandra_walker` to cassandra cluster, `cassandra_walker` find tables in each keyspaces and for each tables create golang types, and idiom go codes.
+with pointing `cassandra-walker` to cassandra cluster, `cassandra-walker` find tables in each keyspaces and for each tables create golang types, and idiom go codes.
 
 ## Quickstart
 
-Install `cassandra_walker` with:
+Install `cassandra-walker` with:
 ```
-go get -u github.com/jozn/cassandra_walker
+go get -u github.com/jozn/cassandra-walker
 ```
 
 Then point to cassandra node to genrate code for a keyspace (ex `twitter`):
 
 ```
-cassandra_walker twitter
+cassandra-walker twitter
 ```
 
 This will produce `xc` folder in current directory, and puts generated golang codes in this folder.
 
 ## Command Line Parameters
 
-Use ` cassandra_walker -h` to see parameter options.
+Use ` cassandra-walker -h` to see parameter options.
 
 ```
-Usage: cassandra_walker [--host HOST] [--port PORT] [--verbose] [--dir DIR] [--package PACKAGE] [--minimize] [KEYSPACES [KEYSPACES ...]]
+Usage: cassandra-walker [--host HOST] [--port PORT] [--verbose] [--dir DIR] [--package PACKAGE] [--minimize] [KEYSPACES [KEYSPACES ...]]
 
 Positional arguments:
   KEYSPACES              cassandra keyspaces to build
@@ -42,7 +42,7 @@ Options:
 
 ## Guides
 Lets see how to use this tool.
-We will follow twitter sample in [sample directory](https://github.com/jozn/cassandra_walker/tree/master/samples/twitter)
+We will follow twitter sample in [sample directory](https://github.com/jozn/cassandra-walker/tree/master/samples/twitter)
 
 Assume you have this cassandra keyspace:
 ```cql
@@ -71,12 +71,12 @@ CREATE TABLE twitter.user (
 
 Run the following command:
 ```
-cassandra_walker twitter --host 127.0.01 --port 9042
+cassandra-walker twitter --host 127.0.01 --port 9042
 ```
 
 This will generates codes in `xc` directory.
 
-See the result in [godoc](https://godoc.org/github.com/jozn/cassandra_walker/samples/twitter/xc) or in [go files](https://github.com/jozn/cassandra_walker/tree/master/samples/twitter/xc).
+See the result in [godoc](https://godoc.org/github.com/jozn/cassandra-walker/samples/twitter/xc) or in [go files](https://github.com/jozn/cassandra-walker/tree/master/samples/twitter/xc).
 
 ```go
 package xc
@@ -122,7 +122,7 @@ package main
 
 import (
 	"github.com/gocql/gocql"
-	"github.com/jozn/cassandra_walker/samples/twitter/xc"
+	"github.com/jozn/cassandra-walker/samples/twitter/xc"
 )
 
 func main() {
