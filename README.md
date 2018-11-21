@@ -54,10 +54,10 @@ CREATE KEYSPACE twitter
 
 CREATE TABLE twitter.twitt (
 	user_id bigint,
-	twiit_id varchar,
+	tweet_id varchar,
 	body varchar,
 	create_time int,
-	PRIMARY KEY (user_id,twiit_id)
+	PRIMARY KEY (user_id,tweet_id)
 );
 
 CREATE TABLE twitter.user (
@@ -84,7 +84,7 @@ package xc
 type Twitt struct {
 	Body       string // body  regular
 	CreateTime int    // create_time  regular
-	TwiitId    string // twiit_id  clustering
+	TweetId    string // tweet_id  clustering
 	UserId     int    // user_id  partition_key
 
 	_exists, _deleted bool
@@ -94,7 +94,7 @@ type Twitt struct {
 := &xc.Twitt {
 	Body: "",
 	CreateTime: 0,
-	TwiitId: "",
+	TweetId: "",
 	UserId: 0,
 */
 
@@ -137,7 +137,7 @@ func main() {
 	twitt1 := xc.Twitt{
 		Body:       "Hello World",
 		CreateTime: 1566000000,
-		TwiitId:    1,
+		TweetId:    1,
 		UserId:     1,
 	}
 
@@ -152,20 +152,20 @@ func main() {
 	twitt, err := xc.NewTwitt_Selector().UserId_Eq(1).Limit(5).GetRows(session) // returns a single twitt ( *twitt ,err )
 
 	//can use clustering columns too
-	twitts, err = xc.NewTwitt_Selector().UserId_Eq(1).And_TwiitId_In(1, 25, 68).GetRows(session)
+	twitts, err = xc.NewTwitt_Selector().UserId_Eq(1).And_TweetId_In(1, 25, 68).GetRows(session)
 
 	//can select just some columns, it will returns *[]Twitt, with just selected columns sets
-	twitts, err = xc.NewTwitt_Selector().Select_UserId().Select_Body().UserId_Eq(1).And_TwiitId_In(1, 25, 68).Limit(12).GetRows(session)
+	twitts, err = xc.NewTwitt_Selector().Select_UserId().Select_Body().UserId_Eq(1).And_TweetId_In(1, 25, 68).Limit(12).GetRows(session)
 
 	//for when need to use filtering
 	twitts, err = xc.NewTwitt_Selector().UserId_LT_Filtering(100).Limit(10).AllowFiltering().GetRows(session)
 
 	//////////////// For Updater
 	err = xc.NewTwitt_Updater().
-		Body("new twitt text").UserId_Eq(1).And_TwiitId_In(1, 2, 3).Update(session)
+		Body("new twitt text").UserId_Eq(1).And_TweetId_In(1, 2, 3).Update(session)
 
 	//////////////// For Deleter
-	err = xc.NewTwitt_Deleter().UserId_Eq(1).And_TwiitId_In(1, 2, 3).Delete(session)
+	err = xc.NewTwitt_Deleter().UserId_Eq(1).And_TweetId_In(1, 2, 3).Delete(session)
 	err = xc.NewTwitt_Deleter().UserId_Eq(1).Delete(session)
 
 	_ = err
@@ -175,15 +175,15 @@ func main() {
 
 /* log output - this is produced CQL queries to cassandra:
 
-2018/09/18 22:35:54 CQL:  [insert into twitter.twitt (body,create_time,twiit_id,user_id) values (?,?,?,?)  [Hello World 1566000000 1 1]]
-2018/09/18 22:35:54 CQL:  [DELETE FROM twitter.twitt WHERE  user_id = ? And twiit_id = ?  [1 1]]
+2018/09/18 22:35:54 CQL:  [insert into twitter.twitt (body,create_time,tweet_id,user_id) values (?,?,?,?)  [Hello World 1566000000 1 1]]
+2018/09/18 22:35:54 CQL:  [DELETE FROM twitter.twitt WHERE  user_id = ? And tweet_id = ?  [1 1]]
 2018/09/18 22:35:54 CQL:  [SELECT * FROM twitter.twitt WHERE  user_id = ?  LIMIT 5 [1]]
 2018/09/18 22:35:54 CQL:  [SELECT * FROM twitter.twitt WHERE  user_id = ?  LIMIT 5 [1]]
-2018/09/18 22:35:54 CQL:  [SELECT * FROM twitter.twitt WHERE  user_id = ? And twiit_id IN (?,?,?)  [1 1 25 68]]
-2018/09/18 22:35:54 CQL:  [SELECT user_id, body FROM twitter.twitt WHERE  user_id = ? And twiit_id IN (?,?,?)  LIMIT 12 [1 1 25 68]]
+2018/09/18 22:35:54 CQL:  [SELECT * FROM twitter.twitt WHERE  user_id = ? And tweet_id IN (?,?,?)  [1 1 25 68]]
+2018/09/18 22:35:54 CQL:  [SELECT user_id, body FROM twitter.twitt WHERE  user_id = ? And tweet_id IN (?,?,?)  LIMIT 12 [1 1 25 68]]
 2018/09/18 22:35:54 CQL:  [SELECT * FROM twitter.twitt WHERE  user_id < ?  LIMIT 10  ALLOW FILTERING [100]]
-2018/09/18 22:35:54 CQL:  [UPDATE twitter.twitt SET body = ?  WHERE  user_id = ? And twiit_id IN (?,?,?)  [new twitt text 1 1 2 3]]
-2018/09/18 22:35:54 CQL:  [DELETE FROM twitter.twitt WHERE  user_id = ? And twiit_id IN (?,?,?)  [1 1 2 3]]
+2018/09/18 22:35:54 CQL:  [UPDATE twitter.twitt SET body = ?  WHERE  user_id = ? And tweet_id IN (?,?,?)  [new twitt text 1 1 2 3]]
+2018/09/18 22:35:54 CQL:  [DELETE FROM twitter.twitt WHERE  user_id = ? And tweet_id IN (?,?,?)  [1 1 2 3]]
 2018/09/18 22:35:54 CQL:  [DELETE FROM twitter.twitt WHERE  user_id = ?  [1]]
 
 */

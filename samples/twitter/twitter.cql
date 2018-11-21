@@ -1,15 +1,15 @@
 CREATE KEYSPACE twitter
-  WITH REPLICATION = { 
-   'class' : 'SimpleStrategy', 
-   'replication_factor' : 1 
+  WITH REPLICATION = {
+   'class' : 'SimpleStrategy',
+   'replication_factor' : 1
  };
 
-CREATE TABLE twitter.twitt (
-	user_id int,
-	twiit_id bigint,
+CREATE TABLE twitter.tweet (
+	user_id bigint,
+	tweet_id varchar,
 	body varchar,
 	create_time int,
-	PRIMARY KEY (user_id,twiit_id)
+	PRIMARY KEY (user_id,tweet_id)
 );
 
 CREATE TABLE twitter.user (

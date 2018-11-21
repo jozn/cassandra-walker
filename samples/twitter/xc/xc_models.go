@@ -1,19 +1,19 @@
 package xc
 
-type Twitt struct {
+type Tweet struct {
 	Body       string // body  regular
 	CreateTime int    // create_time  regular
-	TwiitId    int    // twiit_id  clustering
+	TweetId    string // tweet_id  clustering
 	UserId     int    // user_id  partition_key
 
 	_exists, _deleted bool
 }
 
 /*
-:= &xc.Twitt {
+:= &xc.Tweet {
 	Body: "",
 	CreateTime: 0,
-	TwiitId: 0,
+	TweetId: "",
 	UserId: 0,
 */
 
@@ -36,11 +36,11 @@ type User struct {
 
 // logs tables
 type LogTableCql struct {
-	Twitt bool
+	Tweet bool
 	User  bool
 }
 
 var LogTableCqlReq = LogTableCql{
-	Twitt: true,
+	Tweet: true,
 	User:  true,
 }
