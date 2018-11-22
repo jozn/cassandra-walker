@@ -5,6 +5,16 @@ Cassandra walker is and ORM (Object Relation Mapper) like, for cassandra.
 
 with pointing `cassandra-walker` to cassandra cluster, `cassandra-walker` find tables in each keyspaces and for each tables create golang types, and idiom go codes.
 
+This tools makes working with Cassandra a bleaz, it works great with IDEs, catch most of bugs at compile time. Makes code base much more scalable and maintainable.
+
+#### Demo of how you will code with the result of this tool
+
+Create, Update, Delete for a Row:
+![](https://raw.githubusercontent.com/jozn/cassandra-walker/master/art/1.gif)
+
+Building query against Cassandra:
+![](https://raw.githubusercontent.com/jozn/cassandra-walker/master/art/2.gif)
+
 ## Quickstart
 
 Install `cassandra-walker` with:
