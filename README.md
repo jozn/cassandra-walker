@@ -1,4 +1,8 @@
 # Cassandra walker
+
+> **Unix philosophy**
+>> Rule of Generation: Developers should avoid writing code by hand and instead write abstract high-level programs that generate code. This rule aims to reduce human errors and save time.
+
 Cassandra walker is and ORM and query builder, for Cassandra, 
 
 `cassandra-walker` is command-line tool to generate idiomatic Golang code for Cassandra keyspaces (databases).
