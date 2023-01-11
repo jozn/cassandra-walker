@@ -1,6 +1,6 @@
 # Cassandra walker
 
-**Rust version** in [here](https://github.com/jozn/cassandra_walker_rusting)
+**Rust version** in [here](https://github.com/jozn/cassandra_walker_rust)
 
 > **Unix philosophy**
 >> Rule of Generation: Developers should avoid writing code by hand and instead write abstract high-level programs that generate code. This rule aims to reduce human errors and save time.
